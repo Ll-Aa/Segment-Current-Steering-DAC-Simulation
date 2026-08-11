@@ -1,0 +1,17 @@
+
+build/
+cmake‑build‑*/
+*.out
+*.exe
+*.root
+*.png
+*.pdf
+*.jpg
+*.csv
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+install_manifest.txt
+*.log
+.DS_Store
+*~
