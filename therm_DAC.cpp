@@ -2,6 +2,7 @@
 #include <vector>
 #include <random>
 #include <cmath>
+#include <ctime>
 #include <cstdint>
 #include "TCanvas.h"
 #include "TGraph.h"
@@ -23,7 +24,7 @@ const double   I_Unit_Ideal   = 1.0;           //Ideal single unit current sourc
  * Input :Random engine
  * Output:vector<double> Iout[N_Code],Iout[c]:the DAC output current corresponding to the digital code c
  */
-std::vector<double> getThermDAC_current(std::mt19937& engine){
+std::vector<double> getThermDAC_current(std::default_random_engine& engine){
   std::normal_distribution<double> gauss(0.0,Sigma_u);
   std::vector<double> Iout(N_Code,0.0);
   std::vector<double> I_Unit_Mis(N_Code);
@@ -76,8 +77,7 @@ std::vector<double> calINL_Endpoint(const std::vector<double>& Iout,const double
 }
 
 int main(){
-  std::random_device rd;
-  std::mt19937 engine(rd());
+  std::default_random_engine engine(time(0));
   const double LSB_Ideal = I_Unit_Ideal;
   std::vector<std::vector<double>> DNL_all(N_MC,std::vector<double>(N_DNL));
   std::vector<std::vector<double>> INL_all(N_MC,std::vector<double>(N_Code));

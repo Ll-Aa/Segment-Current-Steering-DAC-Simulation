@@ -2,6 +2,7 @@
 #include <vector>
 #include <random>
 #include <cmath>
+#include <ctime>
 #include <fstream>
 #include <string>
 #include <tuple>
@@ -79,7 +80,7 @@ Eigen::VectorXd rmsAlongMC(const Eigen::MatrixXd& mat)
     return res;
 }
 
-std::tuple<double,double> simulateOnePaperDAC(int m, std::mt19937& rng)
+std::tuple<double,double> simulateOnePaperDAC(int m, std::default_random_engine& rng)
 {
     int therm_h = m;
     int therm_l = THERM_TOTAL - m;
@@ -173,7 +174,7 @@ std::tuple<double,double> simulateOnePaperDAC(int m, std::mt19937& rng)
 }
 
 
-std::vector<std::tuple<int,double,double>> simulateAllPaperDAC(std::mt19937& rng)
+std::vector<std::tuple<int,double,double>> simulateAllPaperDAC(std::default_random_engine& rng)
 {
     std::vector<std::tuple<int,double,double>> res;
     for(int m=0;m<=THERM_TOTAL;m++)
@@ -341,8 +342,7 @@ void drawPaperPlots(const std::vector<ResRow>& table)
 
 int main()
 {
-    std::random_device rd;
-    std::mt19937 rng(rd());
+    std::default_random_engine rng(time(0));
 
     auto raw = simulateAllPaperDAC(rng);
     auto tab = computeAreaTablePaper(raw);

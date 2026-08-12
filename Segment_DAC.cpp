@@ -2,6 +2,7 @@
 #include <vector>
 #include <random>
 #include <cmath>
+#include <ctime>
 #include <fstream>
 #include <string>
 #include <tuple>
@@ -75,7 +76,7 @@ Eigen::VectorXd rmsAlongMC(const Eigen::MatrixXd& mat)
     return res;
 }
 
-std::tuple<double,double> simulateOneSegmentDAC(int M, std::mt19937& rng)
+std::tuple<double,double> simulateOneSegmentDAC(int M, std::default_random_engine& rng)
 {
     int L = Nbit - M;
     int unit_per_therm_step = 1 << L;
@@ -149,7 +150,7 @@ std::tuple<double,double> simulateOneSegmentDAC(int M, std::mt19937& rng)
     return {dnl_rms_max, inl_rms_max};
 }
 
-std::vector<std::tuple<int,double,double>> simulateAllSegmentDAC(std::mt19937& rng)
+std::vector<std::tuple<int,double,double>> simulateAllSegmentDAC(std::default_random_engine& rng)
 {
     std::vector<std::tuple<int,double,double>> out;
     for(int M = 0; M <= 12; M++)
@@ -357,8 +358,7 @@ void drawAreaTradeoff(const std::vector<ResRow>& table, int M_opt, double log2A_
 
 int main()
 {
-    std::random_device rd;
-    std::mt19937 rng(rd());
+    std::default_random_engine rng(time(0));
     auto raw_table = simulateAllSegmentDAC(rng);
     auto res_table = computeAreaTable(raw_table);
     auto [M_opt, idx_opt, log2A_opt] = findOptimalM(res_table);
